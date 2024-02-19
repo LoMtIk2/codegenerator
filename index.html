@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор рандомных кодов</title>
+  <style>
+    body {
+        max-width: 750px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -ms-user-select: none;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    input {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -ms-user-select: none;
+        font-weight: bold;
+        text-align: center;
+        font-size: 30px;
+        height: 70px;
+        border-radius: 20px;
+        color: #000000;
+        margin-bottom: 50px;
+        width: 400px;
+        border: 3px solid #ff4d00;
+    }
+    button {
+        cursor: pointer;
+        color: #ffffff;
+        font-weight: bold;
+        height: 70px;
+        width: 400px;
+        border-radius: 90px;
+        background-color: #ff4d00;
+        border: 3px solid #ff4d00;
+        margin: 5px;
+        transition: border 1s;
+        font-size: 20px;
+    }
+
+    #copy {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: #ffffff;
+        font-weight: bold;
+        height: 70px;
+        width: 400px;
+        border-radius: 90px;
+        background-color: #ffffff;
+        border: 3px solid #ff4d00;
+        margin-top: 25px;
+        transition: border 1s;
+        font-size: 20px;
+        color:#ff4d00;
+    }
+
+    button:hover {
+        transition: background-color 0.5s;
+        transition: color 0.5s;
+        border: 3px solid #ff4d00;
+        background-color: #ffffff;
+        color:#ff4d00;
+    }
+    
+    #copy:hover {
+        transition: background-color 0.5s;
+        border: 3px solid #ff4d00;
+        transition: color rgb(0, 0, 0);
+        color: #ffffff;
+        background-color: #ff4d00;
+    }
+    .dark-theme {
+        color: white;
+        background-color: #020011;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -ms-user-select: none;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+
+    .dark-theme #copy {
+        color: rgb(255, 255, 255);
+        background-color: #020011;
+    }
+
+    .dark-theme button {
+        color:#ffffff;
+    }
+    .dark-theme button:hover {
+        transition: background-color 0.5s;
+        color:#ffffff;
+        background-color: #020011;
+    }
+    .dark-theme #copy:hover {
+        transition: color 0.5s;
+        transition: background-color 0.5s;
+        color:#ffffff;
+        background-color: #ff4d00;
+    }
+
+    .dark-input {
+        color: white;
+        background-color: #020011;
+    }
+
+    .colors-button {
+        border: 2px solid;
+        width: 200px;
+        border-radius: 25px;
+    }
+    .colors-button:hover {
+        height: 60px;
+        border-radius: 25px;
+    }
+  </style>
+</head>
+<body>
+    <h1>Генератор рандомных кодов</h1>
+    <h2>Ваш код:</h2>
+    <input type="text" id="code" size="20" readonly>
+    <button onclick="generateRandomLetters()">Генерировать только с буквами</button>
+    <button onclick="generateRandomSymbols()">Генерировать с символами</button>
+    <div id="copy" onclick="copyCode()">Копировать код</div>
+    <h3>Выбрать цвет кнопок:</h3>
+    <button class="colors-button" id="red-button" onclick="changeButtonColor('red')" style="background-color:red;">RED</button>
+    <button class="colors-button" id="green-button" onclick="changeButtonColor('green')" style="background-color:green;">GREEN</button>
+    <button class="colors-button" id="blue-button" onclick="changeButtonColor('blue')" style="background-color:rgb(0, 85, 255);">BLUE</button>
+    <button class="colors-button" id="default-button" onclick="changeButtonColor('#ff4d00')" style="background-color: #ff4d00;">DEFAULT</button>
+  <button id="darkbutton" onclick="toggleTheme()">Выбрать тёмную сторону</button>
+
+  <script>
+    function generateRandomLetters() {
+      var code = '';
+      var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      for (var i = 0; i < 15; i++) {
+        code += letters.charAt(Math.floor(Math.random() * letters.length));
+      }
+      document.getElementById('code').value = code;
+    }
+
+    function generateRandomSymbols() {
+      var code = '';
+      var symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.#$%&';
+      for (var i = 0; i < 15; i++) {
+        code += symbols.charAt(Math.floor(Math.random() * symbols.length));
+      }
+      document.getElementById('code').value = code;
+    }
+
+    function copyCode() {
+      var code = document.getElementById('code').value;
+      navigator.clipboard.writeText(code);
+      alert('Код: (' + code + ') скопирван');
+    }
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('dark-theme');
+        const input = document.getElementById('code');
+        input.classList.toggle('dark-input');
+        const button = document.getElementById('copy');
+        button.classList.toggle('dark-button');
+    }
+
+    function changeButtonColor(color) {
+    const buttons = document.getElementsByTagName('button');
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.backgroundColor = color;
+        buttons[i].style.borderColor = color;
+        buttons[i].style.сolor = ('white');
+    }
+}
+  </script>
+</body>
+</html>
