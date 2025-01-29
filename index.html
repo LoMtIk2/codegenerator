@@ -44,7 +44,7 @@
             font-weight: bold;
             padding-left: 10px;
             height: 45px;
-            width: 235px;
+            width: 195px;
             border: none;
             background: none;
             cursor: default;
@@ -85,7 +85,6 @@
             cursor: pointer;
             height: 45px;
             width: 45px;
-            max-width: 300px;
             border-radius: 15px;
             background-color: #ff4d00;
             color: #ffffff;
@@ -213,7 +212,28 @@
 
         .copy-text {
             cursor: text;
+            padding-left: 0px;
+
         }
+
+        #clear {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            height: 45px;
+            width: 45px;
+            border-radius: 15px;
+            color: #ff4d00;
+            transition: all 0.3s ease;
+            font-size: 25px;
+            margin-left: -90px;
+        }
+
+        #clear.default {
+            margin-left: 0px;
+        }
+
     </style>
 </head>
 
@@ -221,12 +241,14 @@
     <div class="container">
         <h1>Генератор кодов</h1>
         <div class="copy-container">
+            <div id="clear" onclick="clearCode()"><i class="bi bi-backspace-reverse-fill"></i></div>
             <input type="text" id="code" size="20" placeholder="Сгенерируйте код" readonly>
             <div id="copy" onclick="copyCode()"><i class="bi bi-clipboard-plus-fill"></i></div>
         </div>
         <div id="message" class="message"></div>
         <button onclick="generateRandomLetters()">Буквы и цифры</button>
         <button onclick="generateRandomSymbols()">Все символы</button>
+        
     </div>
 
     <script>
@@ -238,6 +260,7 @@
             }
             document.getElementById('code').value = code;
             document.getElementById('code').classList.add('copy-text');
+            document.getElementById('clear').classList.add('default');
         }
 
         function generateRandomSymbols() {
@@ -248,40 +271,14 @@
             }
             document.getElementById('code').value = code;
             document.getElementById('code').classList.add('copy-text');
+            document.getElementById('clear').classList.add('default');
         }
 
-        // function copyCode() {
-        //     var code = document.getElementById('code').value;
-
-        //     if (code) {
-        //         navigator.clipboard.writeText(code).then(function () {
-        //             var copyButton = document.getElementById('copy');
-        //             var messageElement = document.getElementById('message');
-
-        //             copyButton.innerHTML = '<i class="bi bi-check-lg"></i>';
-        //             copyButton.classList.add('success');
-
-        //             // Восстанавливаем текст через 2 секунды
-        //             setTimeout(function () {
-        //                 copyButton.innerHTML = '<i class="bi bi-clipboard-plus-fill"></i>';
-        //                 copyButton.classList.remove('success');
-        //             }, 2000);
-        //         });
-        //     } else if (!code) {
-        //         navigator.clipboard.writeText(code).then(function () {
-        //             var copyButton = document.getElementById('copy');
-        //             var messageElement = document.getElementById('message');
-
-        //             copyButton.innerHTML = '<i class="bi bi-x"></i>';
-        //             copyButton.classList.add('error');
-
-        //             setTimeout(function () {
-        //                 copyButton.innerHTML = '<i class="bi bi-clipboard-plus-fill"></i>';
-        //                 copyButton.classList.remove('error');
-        //             }, 2000);
-        //         });
-        //     }
-        // }
+        function clearCode() {
+            document.getElementById('code').value = '';
+            document.getElementById('code').classList.remove('copy-text');
+            document.getElementById('clear').classList.remove('default');
+        }
 
         function copyCode() {
             var code = document.getElementById('code').value;
