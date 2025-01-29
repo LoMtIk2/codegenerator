@@ -44,15 +44,14 @@
             font-weight: bold;
             padding-left: 10px;
             height: 45px;
-            width: 240px;
+            width: 235px;
             border: none;
             background: none;
+            cursor: default;
         }
 
         input:focus {
             outline: none;
-            border-color: #ff6f61;
-            box-shadow: 0 4px 12px rgba(255, 111, 97, 0.5);
         }
 
         button {
@@ -100,7 +99,19 @@
             border-color: #4CAF50;
             color: #ffffff;
             border-radius: 30px;
+            transition: all 0.5s ease;
             rotate: 360deg;
+            font-size: 25px;
+
+        }
+
+        #copy.error {
+            background-color: #ff0000;
+            border-color: #ff0000;
+            color: #ffffff;
+            border-radius: 30px;
+            transition: all 0.5s ease;
+            rotate: -360deg;
             font-size: 25px;
 
         }
@@ -154,13 +165,13 @@
             height: 60px;
             border-radius: 20px;
             padding-inline: 5px;
-            margin-bottom: 20px;
             width: 300px;
             border: 3px solid #ff4d00;
             background-color: rgba(255, 255, 255, 0.8);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.226);
             transition: all 0.3s ease;
             overflow: hidden;
+            margin-bottom: 10px;
         }
 
         .container {
@@ -174,6 +185,35 @@
             width: 25px;
             height: 25px;
         }
+
+        .message {
+            background-color: #fff;
+            border-radius: 10px;
+            width: 250px;
+            text-align: center;
+            height: 0px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message.very {
+            height: 22px;
+            color: #4CAF50;
+        }
+
+        .message.error-code {
+            height: 22px;
+            color: #FF0000;
+        }
+
+        .copy-text {
+            cursor: text;
+        }
     </style>
 </head>
 
@@ -184,6 +224,7 @@
             <input type="text" id="code" size="20" placeholder="Сгенерируйте код" readonly>
             <div id="copy" onclick="copyCode()"><i class="bi bi-clipboard-plus-fill"></i></div>
         </div>
+        <div id="message" class="message"></div>
         <button onclick="generateRandomLetters()">Буквы и цифры</button>
         <button onclick="generateRandomSymbols()">Все символы</button>
     </div>
@@ -196,6 +237,7 @@
                 code += letters.charAt(Math.floor(Math.random() * letters.length));
             }
             document.getElementById('code').value = code;
+            document.getElementById('code').classList.add('copy-text');
         }
 
         function generateRandomSymbols() {
@@ -205,27 +247,81 @@
                 code += symbols.charAt(Math.floor(Math.random() * symbols.length));
             }
             document.getElementById('code').value = code;
+            document.getElementById('code').classList.add('copy-text');
         }
+
+        // function copyCode() {
+        //     var code = document.getElementById('code').value;
+
+        //     if (code) {
+        //         navigator.clipboard.writeText(code).then(function () {
+        //             var copyButton = document.getElementById('copy');
+        //             var messageElement = document.getElementById('message');
+
+        //             copyButton.innerHTML = '<i class="bi bi-check-lg"></i>';
+        //             copyButton.classList.add('success');
+
+        //             // Восстанавливаем текст через 2 секунды
+        //             setTimeout(function () {
+        //                 copyButton.innerHTML = '<i class="bi bi-clipboard-plus-fill"></i>';
+        //                 copyButton.classList.remove('success');
+        //             }, 2000);
+        //         });
+        //     } else if (!code) {
+        //         navigator.clipboard.writeText(code).then(function () {
+        //             var copyButton = document.getElementById('copy');
+        //             var messageElement = document.getElementById('message');
+
+        //             copyButton.innerHTML = '<i class="bi bi-x"></i>';
+        //             copyButton.classList.add('error');
+
+        //             setTimeout(function () {
+        //                 copyButton.innerHTML = '<i class="bi bi-clipboard-plus-fill"></i>';
+        //                 copyButton.classList.remove('error');
+        //             }, 2000);
+        //         });
+        //     }
+        // }
 
         function copyCode() {
             var code = document.getElementById('code').value;
+            var copyButton = document.getElementById('copy');
+            var messageElement = document.getElementById('message');
 
             if (code) {
                 navigator.clipboard.writeText(code).then(function () {
-                    var copyButton = document.getElementById('copy');
+                    // Заменяем содержимое кнопки на SVG-иконку успешного копирования
                     copyButton.innerHTML = '<i class="bi bi-check-lg"></i>';
                     copyButton.classList.add('success');
+                    messageElement.textContent = 'Код скопирован!';
+                    messageElement.classList.add('very');
 
-                    // Восстанавливаем текст через 2 секунды
+                    // Восстанавливаем содержимое кнопки через 2 секунды
                     setTimeout(function () {
+                        messageElement.classList.remove('very');
+                        messageElement.textContent = '';
                         copyButton.innerHTML = '<i class="bi bi-clipboard-plus-fill"></i>';
                         copyButton.classList.remove('success');
                     }, 2000);
+                }).catch(function (err) {
+                    messageElement.textContent = 'Произошла ошибка';
                 });
             } else if (!code) {
-                document.getElementById('code').class = 'empty';
+                navigator.clipboard.writeText(code).then(function () {
+                    messageElement.textContent = 'Сначала сгенерируйте код.';
+                    messageElement.classList.add('error-code');
+                    copyButton.innerHTML = '<i class="bi bi-x"></i>';
+                    copyButton.classList.add('error');
+                    setTimeout(function () {
+                        copyButton.innerHTML = '<i class="bi bi-clipboard-plus-fill"></i>';
+                        copyButton.classList.remove('error');
+                        messageElement.classList.remove('error-code');
+                        messageElement.textContent = '';
+                    }, 2000);
+                });
             }
         }
+
     </script>
 </body>
 
